@@ -7,7 +7,11 @@ terraform {
   }
 }
 
-
+# AWS provider configuration for S3 access
+provider "aws" {
+  region  = "us-west-2"      # Replace with the AWS region you're working in
+  profile = "default"        # Optional: Use specific AWS CLI profile
+}
 
 # S3 Bucket Integration for Snowflake
 resource "snowflake_storage_integration" "s3_integration" {
