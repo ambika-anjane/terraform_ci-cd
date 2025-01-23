@@ -15,6 +15,7 @@ resource "snowflake_storage_integration" "s3_integration" {
   storage_provider          = "S3"
   enabled                  = true
   storage_aws_role_arn     = "arn:aws:iam::703671898489:role/json_test" # Replace with actual role ARN
-  STORAGE_ALLOWED_LOCATIONS = "s3://json-aptos/TRN"
+  external_stage_location  = "s3://json-aptos/TRN"
+  STORAGE_ALLOWED_LOCATIONS = "s3://json-aptos/"
   comment                  = "Integration with S3 for data loading and unloading"
 }
