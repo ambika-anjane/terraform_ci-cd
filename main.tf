@@ -26,8 +26,5 @@ resource "snowflake_stage" "s3_stage" {
   url                     = "s3://your-bucket-name/path/"  # Replace with your actual S3 bucket path
   storage_integration     = snowflake_storage_integration.s3_integration.name
   
-  file_format {
-    type                        = "CSV"
-    field_optionally_enclosed_by = '"'
-  }
+ 
 }
