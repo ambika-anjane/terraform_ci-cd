@@ -87,7 +87,8 @@ resource "snowflake_pipe" "pipe" {
   copy_statement  = "COPY INTO  DEV_AMBIKA.DEV_SCHEMA.RAW_TRANSACTIONS FROM @DEV_AMBIKA.DEV_SCHEMA.S3_EXTERNAL FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
   auto_ingest = true
   # Ensure the table is created before the pipe
-  depends_on = [snowflake_table.raw_transactions]
+  depends_on = [snowflake_table.raw_transactions,
+  snowflake_storage_integration.s3_integration]
 }
 
 
