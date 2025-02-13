@@ -31,12 +31,14 @@ variable "snowflake_warehouse" {
 variable "snowflake_database" {
   description = "The Snowflake database to use"
   type        = string
+  default     = "DEV_RAW"
 }
 
 # Snowflake Schema
 variable "snowflake_schema" {
   description = "The Snowflake schema to use"
   type        = string
+  default     = "DEV_TEST"
 }
 
 # Snowflake Role (Optional, if required)
