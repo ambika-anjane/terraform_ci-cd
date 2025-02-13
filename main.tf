@@ -14,7 +14,7 @@ provider "snowflake" {
   user = TF_VAR.snowflake_user
   password = TF_VAR.snowflake_password
   warehouse = TF_VAR.snowflake_warehouse
-  role  = TF.snowflake_role
+  role  = TF_VAR.snowflake_role
 
 }
 
