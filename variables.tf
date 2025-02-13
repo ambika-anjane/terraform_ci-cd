@@ -52,3 +52,13 @@ variable "snowflake_warehouse_size" {
   type        = string
   default     = "XSMALL"  # Default warehouse size if not provided
 }
+
+variable "snowflake_database" {
+  description = "Database name"
+  type        = string
+}
+
+variable "snowflake_schema" {
+  description = "Scehma name"
+  type        = string
+}
