@@ -7,23 +7,25 @@ terraform {
   }
 }
 
+
 provider "snowflake" {
-  organization_name = "QSHODUU"
-  account_name      = "GJ72580"
-  user              = "AMBIKA"
-  password          = "Ambika#2025"
-  role              = "ACCOUNTADMIN" # Optional
-  warehouse         = "COMPUTE_WH"
+  account_name  = var.snowflake_account_name
+  organization_name = var.snowflake_organization_name
+  user = var.snowflake_user
+  password = var.snowflake_password
+  warehouse = var.snowflake_warehouse
+  role  = var.snowflake_role
+
 }
 
 # Create the Database 'dev_raw'
 resource "snowflake_database" "dev" {
-  name = "DEV_AMBIKA"
+  name = "DEV_APTOS"
 }
 
 # Create the Schema 'dev_test' within the 'dev_raw' database
 resource "snowflake_schema" "devtest" {
-  name      = "DEV_SCHEMA"
+  name      = "DEV_TEST"
   database  = snowflake_database.dev.name
 }
 
@@ -31,7 +33,7 @@ resource "snowflake_schema" "devtest" {
 
 # Create the Storage Integration for S3
 resource "snowflake_storage_integration" "s3_integration" {
-  name               = "STORAGE_S3"
+  name               = "STORAGE_APTOS"
   type               = "EXTERNAL_STAGE"
   storage_provider   = "S3"
   storage_aws_role_arn = "arn:aws:iam::703671898489:role/json_test" # Replace with your IAM role ARN
@@ -41,7 +43,7 @@ resource "snowflake_storage_integration" "s3_integration" {
 
 # Create the Storage Integration for S3
 resource "snowflake_stage" "example_stage_with_integration" {
-  name               = "S3_EXTERNAL"
+  name               = "S3_STAGE"
   url                = "s3://json-aptos/TRN"  # Your S3 bucket URL
   database           = snowflake_database.dev.name
   schema             = snowflake_schema.devtest.name
@@ -84,7 +86,7 @@ resource "snowflake_pipe" "pipe" {
   comment = "A pipe"
 
   # Use fully qualified names for the table and stage to avoid session context issues
-  copy_statement  = "COPY INTO  DEV_AMBIKA.DEV_SCHEMA.RAW_TRANSACTIONS FROM @DEV_AMBIKA.DEV_SCHEMA.S3_EXTERNAL FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
+  copy_statement  = "COPY INTO  DEV_APTOS.DEV_TEST.RAW_TRANSACTIONS FROM @DEV_APTOS.DEV_TEST.S3_STAGE FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
   auto_ingest = true
   # Ensure the table is created before the pipe
   depends_on = [snowflake_table.raw_transactions,
