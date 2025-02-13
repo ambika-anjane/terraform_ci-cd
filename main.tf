@@ -21,12 +21,12 @@ provider "snowflake" {
 
 # Create the Database 'dev_raw'
 resource "snowflake_database" "dev" {
-  name = "DEV_LAND"
+  name = "DEV_1"
 }
 
 # Create the Schema 'dev_test' within the 'dev_raw' database
 resource "snowflake_schema" "devtest" {
-  name      = "DEV_LAND_TEST"
+  name      = "DEV_TEST_1"
   database  = snowflake_database.dev.name
 }
 
@@ -34,7 +34,7 @@ resource "snowflake_schema" "devtest" {
 
 # Create the Storage Integration for S3
 resource "snowflake_storage_integration" "s3_integration" {
-  name               = "STORAGE_LAND"
+  name               = "STORAGE1"
   type               = "EXTERNAL_STAGE"
   storage_provider   = "S3"
   storage_aws_role_arn = "arn:aws:iam::703671898489:role/json_test" # Replace with your IAM role ARN
@@ -44,7 +44,7 @@ resource "snowflake_storage_integration" "s3_integration" {
 
 # Create the Storage Integration for S3
 resource "snowflake_stage" "example_stage_with_integration" {
-  name               = "LANDING_STAGE"
+  name               = "STAGE_1"
   url                = "s3://json-aptos/TRN"  # Your S3 bucket URL
   database           = snowflake_database.dev.name
   schema             = snowflake_schema.devtest.name
@@ -87,7 +87,7 @@ resource "snowflake_pipe" "pipe" {
   comment = "A pipe"
 
   # Use fully qualified names for the table and stage to avoid session context issues
-  copy_statement  = "COPY INTO  DEV_LAND.DEV_LAND_TEST.RAW_TRANSACTIONS FROM @DEV_LAND.DEV_LAND_TEST.LANDING_STAGE FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
+  copy_statement  = "COPY INTO  DEV_1.DEV_TEST_1.RAW_TRANSACTIONS FROM @DEV_1.DEV_TEST_1.STAGE_1 FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
   auto_ingest = true
   # Ensure the table is created before the pipe
   depends_on = [snowflake_table.raw_transactions,
