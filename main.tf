@@ -20,12 +20,12 @@ provider "snowflake" {
 
 # Create the Database 'dev_raw'
 resource "snowflake_database" "dev" {
-  name = "DEV_APTOS"
+  name = "DEV_LAND"
 }
 
 # Create the Schema 'dev_test' within the 'dev_raw' database
 resource "snowflake_schema" "devtest" {
-  name      = "DEV_TEST"
+  name      = "DEV_LAND_TEST"
   database  = snowflake_database.dev.name
 }
 
@@ -86,7 +86,7 @@ resource "snowflake_pipe" "pipe" {
   comment = "A pipe"
 
   # Use fully qualified names for the table and stage to avoid session context issues
-  copy_statement  = "COPY INTO  DEV_APTOS.DEV_TEST.RAW_TRANSACTIONS FROM @DEV_APTOS.DEV_TEST.S3_STAGE FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
+  copy_statement  = "COPY INTO  DEV_LAND.DEV_LAND_TEST.RAW_TRANSACTIONS FROM @DEV_APTOS.DEV_TEST.S3_STAGE FILE_FORMAT = (TYPE = 'JSON')MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PATTERN = '.json$'"
   auto_ingest = true
   # Ensure the table is created before the pipe
   depends_on = [snowflake_table.raw_transactions,
