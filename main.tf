@@ -9,12 +9,12 @@ terraform {
 
 
 provider "snowflake" {
-  account_name  = TF_VAR_snowflake_account_name
-  organization_name = TF_VAR_snowflake_organization_name
-  user = TF_VAR_snowflake_user
-  password = TF_VAR_snowflake_password
-  warehouse = TF_VAR_snowflake_warehouse
-  role  = TF_VAR_snowflake_role
+  account_name  = var.snowflake_account_name
+  organization_name = var.snowflake_organization_name
+  user = var.snowflake_user
+  password = var.snowflake_password
+  warehouse = var.snowflake_warehouse
+  role  = var.snowflake_role
 
 }
 
